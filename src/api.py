@@ -6,7 +6,9 @@ import pandas as pd
 app = FastAPI(title="API No-Show XGBoost")
 
 # Charger le modèle
-model = joblib.load("best_model_xgboost_smote.pkl")
+MODEL_PATH = "models/best_model_xgboost_smote.pkl"
+model = joblib.load(MODEL_PATH)
+
 
 # Entrée structurée
 class PatientFeatures(BaseModel):

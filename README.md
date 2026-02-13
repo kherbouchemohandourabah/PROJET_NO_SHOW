@@ -1,105 +1,171 @@
 Déploiement d’une API IA – Projet No-Show
+1. Contexte du projet
 
-1. Description du Projet
+Ce projet vise à prédire si un patient sera absent (« No-Show ») à un rendez-vous médical.
+Les rendez-vous manqués représentent un enjeu important pour les établissements de santé, entraînant des pertes financières, une mauvaise gestion des ressources et une désorganisation des plannings.
 
-Cette application permet de prédire si un patient sera présent ou absent
-à son rendez-vous médical (« No-Show »).
-Le modèle utilisé est un pipeline complet composé de prétraitement,
-SMOTE et XGBoost, sauvegardé dans best_model_xgboost_smote.pkl.
+Le dataset utilisé provient d’une clinique au Brésil et est disponible publiquement sur Kaggle.
 
-L’API est développée avec FastAPI et conteneurisée avec Docker.
+Ce projet a été réalisé dans le cadre du module :
+Déploiement d’une solution IA.
 
-------------------------------------------------------------------------
+2. Objectifs
 
-2. Structure du Projet
+Développer un modèle de classification robuste pour prédire les absences.
 
-    mon_projet_IA/
-    │── api.py
-    │── best_model_xgboost_smote.pkl
-    │── requirements.txt
-    │── Dockerfile
-    │── .dockerignore
-    │── journal_de_projet.md
+Gérer le déséquilibre des classes à l’aide de SMOTE.
 
-------------------------------------------------------------------------
+Mettre en place un suivi expérimental avec MLflow.
 
-3. Installation Locale (Sans Docker)
+Déployer une API REST professionnelle avec FastAPI.
 
-1) Créer un environnement virtuel
+Conteneuriser l’application avec Docker.
 
-    python -m venv venv
-    source venv/bin/activate      # Linux / Mac
-    venv\Scripts\activate       # Windows
+Structurer le dépôt GitHub selon des standards professionnels.
 
-2) Installer les dépendances
+3. Méthodologie
+3.1 Préparation des données
 
-    pip install -r requirements.txt
+Nettoyage des données
 
-3) Lancer l’API
+Création de nouvelles variables (waiting_days, weekdays)
 
-    uvicorn api:app --reload
+Encodage des variables catégorielles
 
-L’API sera disponible :
+Gestion du déséquilibre des classes avec SMOTE
+
+3.2 Modélisation
+
+Algorithme utilisé : XGBoost Classifier
+
+Optimisation des performances
+
+Évaluation via F1-score, matrice de confusion et probabilités de prédiction
+
+Le modèle final est sauvegardé dans :
+
+models/best_model_xgboost_smote.pkl
+
+3.3 Déploiement
+
+Développement d’une API REST avec FastAPI
+
+Documentation automatique via Swagger
+
+Conteneurisation avec Docker pour un déploiement portable
+
+4. Structure du projet
+PROJET_NO_SHOW/
+│
+├── src/                      # Code source de l’API
+│   └── api.py
+├── models/                   # Modèle entraîné
+│   └── best_model_xgboost_smote.pkl
+├── docs/                     # Documentation et captures
+├── portfolio/                # Intégration portfolio
+├── Dockerfile
+├── requirements.txt
+├── journal_de_projet.md
+└── README.md
+
+5. Installation locale (sans Docker)
+
+Créer un environnement virtuel
+
+python -m venv venv
+venv\Scripts\activate       # Windows
+
+
+Installer les dépendances
+
+pip install -r requirements.txt
+
+
+Lancer l’API
+
+uvicorn src.api:app --reload
+
+
+L’API sera disponible à l’adresse suivante :
 http://127.0.0.1:8000/docs
 
-------------------------------------------------------------------------
+6. Construction et exécution avec Docker
 
-4. Construction et Exécution Docker
+Construire l’image :
 
-Construire l’image
+docker build -t noshow-api .
 
-    docker build -t noshow-api .
 
-Lancer le conteneur
+Lancer le conteneur :
 
-    docker run -p 8000:8000 noshow-api
+docker run -p 8000:8000 noshow-api
+
 
 Accéder à la documentation interactive :
 http://127.0.0.1:8000/docs
 
-------------------------------------------------------------------------
-
-5. Endpoints Disponibles
-
-1) GET /health
+7. Endpoints disponibles
+GET /health
 
 Permet de vérifier si l’API fonctionne correctement.
 
 Réponse attendue :
 
-    {"status": "API is running"}
+{"status": "API is running"}
 
-2) POST /predict
+POST /predict
 
-Fournit une prédiction à partir des 11 caractéristiques d’entrée.
+Retourne une prédiction ainsi qu’une probabilité à partir des caractéristiques d’entrée du patient.
 
 Exemple JSON :
 
-    {
-      "Age": 25,
-      "Scholarship": 0,
-      "Hipertension": 1,
-      "Diabetes": 0,
-      "Alcoholism": 0,
-      "Handcap": 1,
-      "SMS_received": 0,
-      "waiting_days": 3,
-      "Gender": "M",
-      "Neighbourhood": "JARDIM DA PENHA",
-      "scheduled_weekday": "Monday",
-      "appointment_weekday": "Tuesday"
-    }
+{
+  "Age": 25,
+  "Scholarship": 0,
+  "Hipertension": 1,
+  "Diabetes": 0,
+  "Alcoholism": 0,
+  "Handcap": 1,
+  "SMS_received": 0,
+  "waiting_days": 3,
+  "Gender": "M",
+  "Neighbourhood": "JARDIM DA PENHA",
+  "scheduled_weekday": "Monday",
+  "appointment_weekday": "Tuesday"
+}
 
-------------------------------------------------------------------------
+8. Rôle et responsabilités
 
-6. Auteur
+Projet réalisé individuellement.
 
-Projet réalisé par Mohand Kherbouche Ourabah
-Dans le cadre du module : Déploiement d’une solution IA
+Rôles assumés :
 
-------------------------------------------------------------------------
+Chef de projet
 
-7. Licence
+Data Scientist
 
-Ce projet est fourni à titre académique dans le cadre d’un exercice
-éducatif.
+Machine Learning Engineer
+
+MLOps Engineer
+
+Responsable documentation et gestion des versions
+
+9. Compétences démontrées
+
+Pipeline Machine Learning complet
+
+Gestion du déséquilibre des classes
+
+Expérimentation et suivi avec MLflow
+
+Déploiement d’API REST
+
+Conteneurisation Docker
+
+Structuration professionnelle d’un dépôt Git
+
+Gestion rigoureuse des versions
+
+10. Licence
+
+Ce projet est fourni à titre académique dans le cadre d’un exercice éducatif.
